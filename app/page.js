@@ -40,8 +40,8 @@ const AuthPage = () => {
         <form onSubmit={handleSubmit}>
           {!isLogin && (
             <>
-             <div className="mb-6 text-center">
-                
+              <div className="mb-6 text-center">
+
                 <div className="relative">
                   <img
                     src={photo ? URL.createObjectURL(photo) : './placeholder.jpg'}
@@ -70,7 +70,7 @@ const AuthPage = () => {
                   className="w-full border border-green-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-300"
                 />
               </div>
-             
+
             </>
           )}
           <div className="mb-4">
@@ -89,14 +89,15 @@ const AuthPage = () => {
             <label htmlFor="password" className="block font-bold mb-2 text-white">
               Password
             </label>
-            <input
-              type={showPassword ? 'text' : 'password'}
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full border border-green-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-300"
-            />
-            <button
+            <div className='relative'>
+              <input
+                type={showPassword ? 'text' : 'password'}
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full border border-green-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-300"
+              />
+              <button
                 type="button"
                 className="absolute inset-y-0 right-0 pr-3 flex items-center"
                 onClick={togglePasswordVisibility}
@@ -111,6 +112,7 @@ const AuthPage = () => {
                   </span>
                 )}
               </button>
+            </div>
           </div>
           <button
             type="submit"
