@@ -1,5 +1,6 @@
 'use client'
 import React, { useState } from 'react';
+import 'material-symbols';
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -7,6 +8,11 @@ const AuthPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [photo, setPhoto] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleToggle = () => {
     setIsLogin(!isLogin);
@@ -84,12 +90,27 @@ const AuthPage = () => {
               Password
             </label>
             <input
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full border border-green-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-300"
             />
+            <button
+                type="button"
+                className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                onClick={togglePasswordVisibility}
+              >
+                {showPassword ? (
+                  <span className="material-symbols-outlined text-gray-500 text-sm">
+                    visibility_off
+                  </span>
+                ) : (
+                  <span className="material-symbols-outlined text-gray-500 text-sm">
+                    visibility
+                  </span>
+                )}
+              </button>
           </div>
           <button
             type="submit"
