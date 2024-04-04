@@ -1,6 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import 'material-symbols';
+import Swal from 'sweetalert2'
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -9,6 +10,7 @@ const AuthPage = () => {
   const [password, setPassword] = useState('');
   const [photo, setPhoto] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
+
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -20,6 +22,7 @@ const AuthPage = () => {
     setEmail('');
     setPassword('');
     setPhoto(null);
+  
   };
 
   const handleSubmit = (e) => {
@@ -29,7 +32,44 @@ const AuthPage = () => {
     console.log('Email:', email);
     console.log('Password:', password);
     console.log('Photo:', photo);
+    let isFormValid = true;
+
+    if (!isLogin && !username.trim()) {
+      Swal.fire('Error', 'Please enter a username.', 'error');
+      isFormValid = false;
+    }
+
+    if (!email.trim()) {
+      Swal.fire('Error', 'Please enter an email.', 'error');
+      isFormValid = false;
+    }
+
+    if (!password.trim()) {
+      Swal.fire('Error', 'Please enter a password.', 'error');
+      isFormValid = false;
+    }
+
+    if (!isLogin && !photo) {
+      Swal.fire('Error', 'Please upload a photo.', 'error');
+      isFormValid = false;
+    }
+    if (isFormValid) {
+      `${isLogin ?
+        Swal.fire({
+        icon: "success",
+        title: "Successfully Logged in",
+        timer: 1500})
+     :
+     Swal.fire({
+        icon: "success",
+        title: "Successfully Registered",
+        timer: 1500
+     })
+      }`
+    }
+  
   };
+  
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-[url('/doc-bg.jpg')] bg-cover bg-center bg-no-repeat">
@@ -46,7 +86,7 @@ const AuthPage = () => {
                   <img
                     src={photo ? URL.createObjectURL(photo) : './placeholder.jpg'}
                     alt="Profile Photo"
-                    className="w-32 h-32 rounded-full object-cover border border-blue-800 mx-auto"
+                    className="w-32 h-32 rounded-full object-cover border-2 border-blue-900 mx-auto"
                   />
                   <input
                     type="file"
@@ -114,12 +154,15 @@ const AuthPage = () => {
               </button>
             </div>
           </div>
+         
           <button
             type="submit"
             className="bg-blue-800 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors duration-300 w-full"
+            
           >
             {isLogin ? 'Login' : 'Register'}
           </button>
+         
         </form>
         <p className="mt-4 text-center">
           {isLogin ? "Don't have an account?" : 'Already have an account?'}
