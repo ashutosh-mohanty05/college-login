@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import 'material-symbols';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -9,7 +9,7 @@ const AuthPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [photo, setPhoto] = useState(null);
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false)
 
 
   const togglePasswordVisibility = () => {
@@ -22,52 +22,29 @@ const AuthPage = () => {
     setEmail('');
     setPassword('');
     setPhoto(null);
-  
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission
-    console.log('Username:', username);
-    console.log('Email:', email);
-    console.log('Password:', password);
-    console.log('Photo:', photo);
-    let isFormValid = true;
-
-    if (!isLogin && !username.trim()) {
-      Swal.fire('Error', 'Please enter a username.', 'error');
-      isFormValid = false;
+    try {
+      const response = await fetch('/api/auth', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, email, password, photo, isLogin}),
+      });
+      const data = await response.json();
+      Swal.fire({
+        icon: response.status === 201 || response.status === 200  ? 'success' : 'error',
+        title: data.message,
+        timer: 1500,
+      });
+    } catch (error) {
+      console.error(error);
+      Swal.fire('Error', 'Error connecting to server', 'error');
     }
-
-    if (!email.trim()) {
-      Swal.fire('Error', 'Please enter an email.', 'error');
-      isFormValid = false;
-    }
-
-    if (!password.trim()) {
-      Swal.fire('Error', 'Please enter a password.', 'error');
-      isFormValid = false;
-    }
-
-    if (!isLogin && !photo) {
-      Swal.fire('Error', 'Please upload a photo.', 'error');
-      isFormValid = false;
-    }
-    if (isFormValid) {
-      `${isLogin ?
-        Swal.fire({
-        icon: "success",
-        title: "Successfully Logged in",
-        timer: 1500})
-     :
-     Swal.fire({
-        icon: "success",
-        title: "Successfully Registered",
-        timer: 1500
-     })
-      }`
-    }
-  
+    
   };
   
 
