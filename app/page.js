@@ -2,8 +2,10 @@
 import React, { useState } from 'react';
 import 'material-symbols';
 import Swal from 'sweetalert2';
+import { useRouter } from 'next/navigation';
 
 const AuthPage = () => {
+  const router =useRouter()
   const [isLogin, setIsLogin] = useState(true);
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -35,11 +37,20 @@ const AuthPage = () => {
         body: JSON.stringify({ username, email, password, photo, isLogin}),
       });
       const data = await response.json();
-      Swal.fire({
-        icon: response.status === 201 || response.status === 200  ? 'success' : 'error',
-        title: data.message,
-        timer: 1500,
-      });
+      if (response.status === 201 || response.status === 200) {
+        Swal.fire({
+          icon: 'success',
+          title: data.message,
+          timer: 1500,
+        });
+        router.push('/home');
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: data.message,
+          timer: 1500,
+        });
+      }
     } catch (error) {
       console.error(error);
       Swal.fire('Error', 'Error connecting to server', 'error');
